@@ -12,27 +12,42 @@ const init = () => {
 };
 
 export const ListTasks = () => {
+  // var set state show/hide modal
   const [show, setShow] = useState(false);
+
+  // var set state close modal
   const handleClose = () => {
-    console.log("Agregando nueva tarea");
     setShow(false);
   };
+
+  // var set state open modal
   const handleShow = () => setShow(true);
+
   const handleAddTask = (task) => {
+    console.log(task)
     console.log("Agregando nueva tarea");
+    dispatch({
+      type: "add",
+      payload: task,
+    });
   };
 
-  const [tasks, dispatch] = useReducer(taskReducer, [], init);
+  // init values task
+  const [tasks, dispatch] = useReducer(taskReducer, [], init)
   console.log(tasks);
 
+  // function generate random tasks
   const handleRandomTasks = () => {
+    // restart state array of tasks
     dispatch({
       type: "restart",
     });
+    // generate 50 random tasks
     const localTasks = [];
     for (let index = 0; index < 50; index++) {
       const task = buildFakeTask();
       localTasks.push(task);
+      // set new task to state
       dispatch({
         type: "add",
         payload: task,
@@ -41,11 +56,13 @@ export const ListTasks = () => {
     localStorage.setItem("tasks", JSON.stringify(localTasks));
   };
 
+  // function to delete one task
   const handleDelete = (item) => {
     const actionDelete = {
       type: "delete",
       payload: item,
     };
+    // delete task from state
     dispatch(actionDelete);
     localStorage.setItem("tasks", JSON.stringify(tasks));
   };

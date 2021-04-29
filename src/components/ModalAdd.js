@@ -1,22 +1,41 @@
 import React, { useState } from "react";
-import { Modal, Button, Container, Row, Col, Form } from "react-bootstrap";
+import {
+  Modal,
+  Button,
+  Container,
+  Row,
+  Col,
+  Form,
+  Alert,
+} from "react-bootstrap";
 import { useForm } from "../hooks/useForm";
+import faker from "faker";
 
 export const ModalAdd = ({ show, handleClose, handleAddTask }) => {
- 
-  const { values, handleInputChange } = useForm({
+  // var used to set values fields name and description
+  const { values, handleInputChange, reset } = useForm({
     name: "",
-    description: ""
+    description: "",
   });
 
   const { name, description } = values;
+  // var to validate native html5 fields bootstrap
   const [validated, setValidated] = useState(false);
-  const [duration, setDuration] = useState({ visibleOther: false, value: "" });
-  const [otherDuration, setOtherDuration] = useState("");
+
+  // var used to set values radio buttons
+  const [duration, setDuration] = useState({ visibleOther: false, value: 0 });
+
+  // var used to set values other value time
+  const [otherDuration, setOtherDuration] = useState("60:00");
+
+  // var used to validate max time other value time
+  const [validationOther, setValidationOther] = useState(false);
 
   const handleSubmit = (event) => {
     event.preventDefault();
     const form = event.currentTarget;
+
+    // check validation and prevent default send form
     if (form.checkValidity() === false) {
       event.preventDefault();
       event.stopPropagation();
@@ -24,21 +43,60 @@ export const ModalAdd = ({ show, handleClose, handleAddTask }) => {
 
     console.log(name, description, duration, otherDuration);
     setValidated(true);
-    console.log("saviiing task");
+
+    // validation values fields
+    if (name.trim().length <= 1 || description.trim().length <= 1 || duration.value === 0) {
+      return;
+    }
+
+    const newTask = {
+      id: faker.datatype.uuid(),
+      name,
+      description,
+      duration: duration.value,
+      advance: 0,
+      percentAdvance: 0,
+      done: false,
+      createdAt: new Date().getTime(),
+      updatedAt: new Date().getTime(),
+    };
+
+    console.log('sabbing task22')
+    
+    handleAddTask(newTask)
+    setDuration({ visibleOther: false, value: 0 })
+    reset()
+    handleClose()
+      
   };
 
+  // on change radio buttons
   const handleRadioChange = ({ target }) => {
-    if (target.value === 'other') {
-      setDuration({ visibleOther: true, value: "" });
+    if (target.value === "other") {
+      setDuration({ visibleOther: true, value: 3600 });
     } else {
-      setDuration({ visibleOther: false, value: target.value });
+      const convertSeconds = parseInt(target.value) * 60;
+      setDuration({ visibleOther: false, value: convertSeconds });
     }
-  }
+  };
 
+  // on change other value time
   const handleOtherChange = ({ target }) => {
-    console.log(target.value);
     setOtherDuration(target.value);
-    // const convertSeconds =
+    const splitMinutes = target.value.split(":");
+    let convertSeconds;
+    if (splitMinutes.length === 2 && splitMinutes[1] !== "") {
+      // convert minutes to seconds
+      convertSeconds =
+        parseInt(splitMinutes[0] * 60) + parseInt(splitMinutes[1]);
+    }
+    // validate if value is < 2 hr
+    if (convertSeconds && convertSeconds <= 7200) {
+      setDuration({ visibleOther: true, value: convertSeconds });
+      setValidationOther(false);
+    } else {
+      setValidationOther(true);
+    }
   };
 
   return (
@@ -108,11 +166,13 @@ export const ModalAdd = ({ show, handleClose, handleAddTask }) => {
                       </Form.Label>
                       <Col sm={10}>
                         <Form.Check
+                          required
                           type="radio"
                           label="30 Minutos"
                           name="duration"
                           id="formHorizontalRadios1"
                           value="30"
+                          // checked="true"
                           onChange={handleRadioChange}
                         />
                         <Form.Check
@@ -139,22 +199,34 @@ export const ModalAdd = ({ show, handleClose, handleAddTask }) => {
                           value="other"
                           onChange={handleRadioChange}
                         />
-                       
+
                         {duration.visibleOther && (
                           <>
                             <Form.Label>
-                          Escribe la hora en minutos y segundos:
+                              Escribe la hora en minutos y segundos:
                             </Form.Label>
-                        
+
                             <Form.Control
                               type="text"
                               name="otherDuration"
                               value={otherDuration}
                               onChange={handleOtherChange}
                               placeholder="00:00"
-                              pattern="[0-6][0-9]:[0-6][0-9]"
+                              pattern="[0-1]{0,1}[0-9][0-9]:[0-6][0-9]"
                               title="El formato de hora es 00:00"
                             />
+                            <Form.Control.Feedback>
+                              Correcto
+                            </Form.Control.Feedback>
+                            <Form.Control.Feedback type="invalid">
+                              Escribe la hora en el formato correcto. Ejemplo:
+                              10:50
+                            </Form.Control.Feedback>
+                            {validationOther && (
+                              <Alert variant="danger">
+                                Solo se permiten 2 horas máximo a la tarea
+                              </Alert>
+                            )}
                           </>
                         )}
                       </Col>

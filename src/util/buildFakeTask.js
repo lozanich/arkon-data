@@ -1,8 +1,8 @@
 import faker from "faker";
 
 export const buildFakeTask = () => {
-  const totalDuration = Math.floor(Math.random() * (60 - 48 + 1) + 48);
-  const advance = (totalDuration / 100) * 80 + Math.floor(Math.random() * 5);
+  const totalDuration = Math.floor(Math.random() * (3600 - 2880 + 1) + 2880);
+  const advance = (totalDuration / 100) * 80 + Math.floor(Math.random() * 300);
   const percentAdvance = (100 * advance) / totalDuration;
 
   return {
