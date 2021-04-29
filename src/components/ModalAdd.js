@@ -3,15 +3,16 @@ import { Modal, Button, Container, Row, Col, Form } from "react-bootstrap";
 import { useForm } from "../hooks/useForm";
 
 export const ModalAdd = ({ show, handleClose, handleAddTask }) => {
+ 
   const { values, handleInputChange } = useForm({
     name: "",
-    description: "",
-    duration: "",
+    description: ""
   });
 
-  const { name, description, duration } = values;
-
+  const { name, description } = values;
   const [validated, setValidated] = useState(false);
+  const [duration, setDuration] = useState({ visibleOther: false, value: "" });
+  const [otherDuration, setOtherDuration] = useState("");
 
   const handleSubmit = (event) => {
     event.preventDefault();
@@ -21,9 +22,23 @@ export const ModalAdd = ({ show, handleClose, handleAddTask }) => {
       event.stopPropagation();
     }
 
-    console.log(name, description, duration);
+    console.log(name, description, duration, otherDuration);
     setValidated(true);
     console.log("saviiing task");
+  };
+
+  const handleRadioChange = ({ target }) => {
+    if (target.value === 'other') {
+      setDuration({ visibleOther: true, value: "" });
+    } else {
+      setDuration({ visibleOther: false, value: target.value });
+    }
+  }
+
+  const handleOtherChange = ({ target }) => {
+    console.log(target.value);
+    setOtherDuration(target.value);
+    // const convertSeconds =
   };
 
   return (
@@ -91,14 +106,14 @@ export const ModalAdd = ({ show, handleClose, handleAddTask }) => {
                       <Form.Label as="legend" column sm={2}>
                         Radios
                       </Form.Label>
-                      <Col sm={4}>
+                      <Col sm={10}>
                         <Form.Check
                           type="radio"
                           label="30 Minutos"
                           name="duration"
                           id="formHorizontalRadios1"
                           value="30"
-                          onChange={handleInputChange}
+                          onChange={handleRadioChange}
                         />
                         <Form.Check
                           type="radio"
@@ -106,7 +121,7 @@ export const ModalAdd = ({ show, handleClose, handleAddTask }) => {
                           name="duration"
                           id="formHorizontalRadios2"
                           value="45"
-                          onChange={handleInputChange}
+                          onChange={handleRadioChange}
                         />
                         <Form.Check
                           type="radio"
@@ -114,17 +129,34 @@ export const ModalAdd = ({ show, handleClose, handleAddTask }) => {
                           name="duration"
                           id="formHorizontalRadios3"
                           value="60"
-                          onChange={handleInputChange}
+                          onChange={handleRadioChange}
                         />
-                      </Col>
-                      <Col sm={6}>
-                        <Form.Label>Otra:</Form.Label>
-                        <Form.Control
-                          type="time"
-                          min="09:00"
-                          max="18:00"
-                          placeholder="Mover el carro"
+                        <Form.Check
+                          type="radio"
+                          label="Personalizado"
+                          name="duration"
+                          id="formHorizontalRadios3"
+                          value="other"
+                          onChange={handleRadioChange}
                         />
+                       
+                        {duration.visibleOther && (
+                          <>
+                            <Form.Label>
+                          Escribe la hora en minutos y segundos:
+                            </Form.Label>
+                        
+                            <Form.Control
+                              type="text"
+                              name="otherDuration"
+                              value={otherDuration}
+                              onChange={handleOtherChange}
+                              placeholder="00:00"
+                              pattern="[0-6][0-9]:[0-6][0-9]"
+                              title="El formato de hora es 00:00"
+                            />
+                          </>
+                        )}
                       </Col>
                     </Form.Group>
                   </fieldset>
