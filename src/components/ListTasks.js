@@ -6,6 +6,7 @@ import { buildFakeTask } from "../util/buildFakeTask";
 import { BsPlusCircle, BsFillAlarmFill } from "react-icons/bs";
 import { ModalAdd } from "../components/ModalAdd";
 import { TaskTable } from "../components/TaskTable";
+import {Timer} from "../components/Timer"
 
 const init = () => {
   return JSON.parse(localStorage.getItem("tasks")) || [];
@@ -19,6 +20,7 @@ export const ListTasks = () => {
   const handleClose = () => {
     setShow(false);
   };
+
 
   // var set state open modal
   const handleShow = () => setShow(true);
@@ -67,6 +69,14 @@ export const ListTasks = () => {
     localStorage.setItem("tasks", JSON.stringify(tasks));
   };
 
+  const [timer, setTimer] = useState(0)
+
+  const handleStartTasks = () => {
+    console.log('start task')
+    const lastTask = tasks.find(item => item.done === false);
+    setTimer(lastTask.duration - lastTask.advance);
+  }
+
   return (
     <>
       <Row className="justify-content-md-center">
@@ -74,13 +84,23 @@ export const ListTasks = () => {
           <h3>Mis tareas</h3>
         </Col>
       </Row>
-      <Row className="justify-content-md-center">
+      <Row>
         <Col className="text-left" sm={6}>
+          <Timer timeFirstTask={ timer } />
+        </Col>
+      </Row>
+      <Row className="justify-content-md-center">
+        <Col className="text-left" sm={2}>
           <Button onClick={handleShow} variant="success" className="my-1">
             Agregar nueva <BsPlusCircle />
           </Button>
         </Col>
-        <Col className="text-right" sm={6}>
+        <Col className="text-center" sm={8}>
+          <Button onClick={handleStartTasks} className="my-1" block>
+            Comenzar tareas <BsFillAlarmFill />
+          </Button>
+        </Col>
+        <Col className="text-right" sm={2}>
           <Button onClick={handleRandomTasks} className="my-1">
             Generar tareas <BsFillAlarmFill />
           </Button>

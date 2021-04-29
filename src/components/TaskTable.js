@@ -5,7 +5,7 @@ import { TaskTableItem } from "../components/TaskTableItem";
 export const TaskTable = ({ tasks, handleDelete }) => {
   return (
     <>
-      <Table striped bordered hover variant="dark">
+      <Table responsive striped bordered hover variant="dark">
         <thead>
           <tr>
             {/* <th>#</th> */}
