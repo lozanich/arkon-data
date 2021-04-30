@@ -3,6 +3,15 @@ export const taskReducer = (state = [], action) => {
     case "add":
       return [...state, action.payload];
 
+    case "edit":
+      state.find((item) => item.id === action.payload.id).description =
+        action.payload.description;
+      state.find((item) => item.id === action.payload.id).name =
+        action.payload.name;
+      state.find((item) => item.id === action.payload.id).duration =
+        action.payload.duration;
+      return state;
+
     case "restart":
       state = [];
       return state;

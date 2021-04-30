@@ -17,7 +17,8 @@ export const ListTasks = () => {
   const [show, setShow] = useState(false);
 
   // var set state close modal
-  const handleClose = () => {
+  const handleCloseModal = () => {
+    setEditTask("")
     setShow(false);
   };
 
@@ -58,6 +59,20 @@ export const ListTasks = () => {
     localStorage.setItem("tasks", JSON.stringify(localTasks));
   };
 
+  const [editTask, setEditTask] = useState("")
+  const handleEdit = (task) => {
+    setShow(true)
+    setEditTask(task)
+  }
+
+  const handleEditTask = (task) => {
+    // dispatch edit task
+    dispatch({
+      type: "edit",
+      payload: task,
+    });
+  }
+
   // function to delete one task
   const handleDelete = (item) => {
     const actionDelete = {
@@ -86,7 +101,7 @@ export const ListTasks = () => {
       </Row>
       <Row>
         <Col className="text-left" sm={6}>
-          <Timer timeFirstTask={ timer } />
+          <Timer timeFirstTask={timer} />
         </Col>
       </Row>
       <Row className="justify-content-md-center">
@@ -109,7 +124,11 @@ export const ListTasks = () => {
       <hr />
       <Row className="justify-content-md-center">
         <Col className="text-right" sm={10}>
-          <TaskTable tasks={tasks} handleDelete={handleDelete} />
+          <TaskTable
+            tasks={tasks}
+            handleDelete={handleDelete}
+            handleEdit={handleEdit}
+          />
         </Col>
 
         <Col className="text-right" sm={2}>
@@ -119,8 +138,10 @@ export const ListTasks = () => {
 
       <ModalAdd
         show={show}
-        handleClose={handleClose}
+        handleCloseModal={handleCloseModal}
         handleAddTask={handleAddTask}
+        editTask={editTask}
+        handleEditTask={handleEditTask}
       />
     </>
   );

@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import {
   Modal,
   Button,
@@ -11,16 +11,22 @@ import {
 import { useForm } from "../hooks/useForm";
 import faker from "faker";
 
-export const ModalAdd = ({ show, handleClose, handleAddTask }) => {
+export const ModalAdd = ({
+  show,
+  handleCloseModal,
+  handleAddTask,
+  editTask,
+  handleEditTask,
+}) => {
+  // console.log(editTask);
+
   // var used to set values fields name and description
-  const { values, handleInputChange, reset } = useForm({
+  const { values, handleInputChange, reset, setValues } = useForm({
     name: "",
     description: "",
   });
 
-  const { name, description } = values;
-  // var to validate native html5 fields bootstrap
-  const [validated, setValidated] = useState(false);
+  const [checkedOther, setCheckedOther] = useState(false);
 
   // var used to set values radio buttons
   const [duration, setDuration] = useState({ visibleOther: false, value: 0 });
@@ -28,9 +34,33 @@ export const ModalAdd = ({ show, handleClose, handleAddTask }) => {
   // var used to set values other value time
   const [otherDuration, setOtherDuration] = useState("60:00");
 
+  useEffect(() => {
+    console.log("use effect");
+    const { name, description, duration } = editTask;
+    if (editTask) {
+      setValues({
+        name,
+        description,
+      });
+      setCheckedOther(true);
+      setDuration({ visibleOther: true, value: duration });
+
+      // calculate seconds to minutes
+      const minutes = parseInt(duration / 60);
+      const seconds = parseInt((minutes * 60 - duration) * -1);
+      setOtherDuration(`${minutes}:${seconds}`);
+    }
+  }, [setValues, editTask]);
+
+  const { name, description } = values;
+  // var to validate native html5 fields bootstrap
+  const [validated, setValidated] = useState(false);
+
   // var used to validate max time other value time
   const [validationOther, setValidationOther] = useState(false);
 
+
+  // send savo or update task
   const handleSubmit = (event) => {
     event.preventDefault();
     const form = event.currentTarget;
@@ -45,12 +75,16 @@ export const ModalAdd = ({ show, handleClose, handleAddTask }) => {
     setValidated(true);
 
     // validation values fields
-    if (name.trim().length <= 1 || description.trim().length <= 1 || duration.value === 0) {
+    if (
+      name.trim().length <= 1 ||
+      description.trim().length <= 1 ||
+      duration.value === 0
+    ) {
       return;
     }
 
     const newTask = {
-      id: faker.datatype.uuid(),
+      id: editTask ? editTask.id : faker.datatype.uuid(),
       name,
       description,
       duration: duration.value,
@@ -61,13 +95,15 @@ export const ModalAdd = ({ show, handleClose, handleAddTask }) => {
       updatedAt: new Date().getTime(),
     };
 
-    console.log('sabbing task22')
-    
-    handleAddTask(newTask)
-    setDuration({ visibleOther: false, value: 0 })
-    reset()
-    handleClose()
-      
+    if (editTask) {
+      handleEditTask(newTask)
+    } else {
+      handleAddTask(newTask);
+    }
+
+    setDuration({ visibleOther: false, value: 0 });
+    reset();
+    handleCloseModal();
   };
 
   // on change radio buttons
@@ -97,6 +133,15 @@ export const ModalAdd = ({ show, handleClose, handleAddTask }) => {
     } else {
       setValidationOther(true);
     }
+  };
+
+  const handleClose = () => {
+    console.log("handloe close modal local");
+    setDuration({ visibleOther: false, value: 0 });
+    reset();
+    handleCloseModal();
+    setCheckedOther(false);
+    editTask = "";
   };
 
   return (
@@ -171,7 +216,7 @@ export const ModalAdd = ({ show, handleClose, handleAddTask }) => {
                           label="30 Minutos"
                           name="duration"
                           id="formHorizontalRadios1"
-                          value="30"
+                          value={duration.value === 0 ? 30 : duration.value}
                           // checked="true"
                           onChange={handleRadioChange}
                         />
@@ -180,7 +225,7 @@ export const ModalAdd = ({ show, handleClose, handleAddTask }) => {
                           label="45 minutos"
                           name="duration"
                           id="formHorizontalRadios2"
-                          value="45"
+                          value={duration.value === 0 ? 45 : duration.value}
                           onChange={handleRadioChange}
                         />
                         <Form.Check
@@ -188,7 +233,7 @@ export const ModalAdd = ({ show, handleClose, handleAddTask }) => {
                           label="60 Minutos"
                           name="duration"
                           id="formHorizontalRadios3"
-                          value="60"
+                          value={duration.value === 0 ? 60 : duration.value}
                           onChange={handleRadioChange}
                         />
                         <Form.Check
@@ -197,6 +242,7 @@ export const ModalAdd = ({ show, handleClose, handleAddTask }) => {
                           name="duration"
                           id="formHorizontalRadios3"
                           value="other"
+                          checked={checkedOther}
                           onChange={handleRadioChange}
                         />
 
@@ -238,10 +284,10 @@ export const ModalAdd = ({ show, handleClose, handleAddTask }) => {
           </Modal.Body>
           <Modal.Footer>
             <Button variant="secondary" onClick={handleClose}>
-              Close
+              Cerrar
             </Button>
             <Button variant="primary" type="submit">
-              Save Changes
+              Guardar cambios
             </Button>
           </Modal.Footer>
         </Form>

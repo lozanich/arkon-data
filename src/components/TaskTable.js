@@ -2,7 +2,7 @@ import React from "react";
 import { Table } from "react-bootstrap";
 import { TaskTableItem } from "../components/TaskTableItem";
 
-export const TaskTable = ({ tasks, handleDelete }) => {
+export const TaskTable = ({ tasks, handleDelete, handleEdit }) => {
   return (
     <>
       <Table responsive striped bordered hover variant="dark">
@@ -26,6 +26,7 @@ export const TaskTable = ({ tasks, handleDelete }) => {
                 item={item}
                 id={id}
                 handleDelete={handleDelete}
+                handleEdit={handleEdit}
               />
             );
           })}

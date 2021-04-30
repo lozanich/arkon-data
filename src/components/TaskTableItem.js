@@ -3,9 +3,7 @@ import { BsTrash, BsPencil } from "react-icons/bs";
 import { Button, ButtonGroup } from "react-bootstrap";
 import {formatData} from "../util/formatData"
 
-export const TaskTableItem = ({ item, id, handleDelete }) => {
- 
-
+export const TaskTableItem = ({ item, id, handleDelete, handleEdit }) => {
   return (
     <>
       <tr key={item.id}>
@@ -17,14 +15,16 @@ export const TaskTableItem = ({ item, id, handleDelete }) => {
         <td>{item.percentAdvance.toFixed(1)}%</td>
         <td>{item.done === 100 ? "Terminada" : "No terminada"}</td>
         <td>
-          <ButtonGroup
-            onClick={() => handleDelete(item)}
-            aria-label="Basic example"
-          >
-            <Button value={`${id + "edit"}`} variant="primary">
+          <ButtonGroup aria-label="Basic example">
+            <Button
+              onClick={() => handleEdit(item)}
+              value={`${id + "edit"}`}
+              variant="primary"
+            >
               <BsPencil value={`${id + "edit"}`} />
             </Button>
             <Button
+              onClick={() => handleDelete(item)}
               value={`${id + "delete"}`}
               className="button-pointer"
               variant="danger"
