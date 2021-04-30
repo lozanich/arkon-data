@@ -90,6 +90,7 @@ export const ListTasks = () => {
   // init timer in 0
   const [timeFirstTask, setTimeFirstTask] = useState(0);
   const [runningTask, setRunningTask] = useState("");
+  const [statusTask, setStatusTask] = useState("stop")
 
   // action button start last task
   const handleStartTasks = () => {
@@ -97,22 +98,61 @@ export const ListTasks = () => {
     const lastTask = tasks.find((item) => item.done === false);
     setRunningTask(lastTask);
     setTimeFirstTask(lastTask.duration - lastTask.advance);
+    setStatusTask("start")
   };
 
   // function pause countdown
-  const handlePauseTask = (task) => {
-    console.log("Pausando la tarea", task);
+  const handlePauseTask = (task, counter) => {
+    console.log("Pausando la tarea", task, counter);
+    setStatusTask("pause");
+    task.advance = task.duration - counter;
+    task.percentAdvance = (100 * task.advance) / task.duration;
+    dispatch({
+      type: "edit",
+      payload: task,
+    });
   };
 
   // function stop countdown
-  const handleStopTask = (task) => {
-    console.log("Deteniendo la tarea", task);
+  const handleStopTask = (task, counter) => {
+    console.log("Deteniendo la tarea", task, counter);
+    setStatusTask("stop");
+    task.advance = task.duration - counter;
+    task.percentAdvance = (100 * task.advance) / task.duration;
+    dispatch({
+      type: "edit",
+      payload: task,
+    });
+    setTimeFirstTask(0);
   };
 
   // function restart countdown
-  const handleRestartTask = (task) => {
-    console.log("Reiniciando la tarea", task);
+  const handleRestartTask = (task, counter) => {
+    console.log("Reiniciando la tarea", task, counter);
+    setStatusTask("restart");
+    task.advance = 0;
+    task.percentAdvance = 0;
+    dispatch({
+      type: "edit",
+      payload: task,
+    });
+    setTimeFirstTask(0);
+    // setTimeFirstTask(task.duration);    
   };
+
+  const handleFinishTask = (task, counter) => { 
+    console.log("Reiniciando la tarea", task, counter);
+
+    setStatusTask("stop");
+    task.advance = task.duration - counter;
+    task.percentAdvance = (100 * task.advance) / task.duration;
+    task.done = true
+     dispatch({
+       type: "edit",
+       payload: task,
+     });
+    setTimeFirstTask(0);
+  }
 
   return (
     <>
@@ -124,11 +164,14 @@ export const ListTasks = () => {
       <Row>
         <Col className="text-center" sm={12} md={{ span: 6, offset: 6 }}>
           <Timer
+            statusTask={statusTask}
             runningTask={runningTask}
             timeFirstTask={timeFirstTask}
             handlePauseTask={handlePauseTask}
             handleStopTask={handleStopTask}
             handleRestartTask={handleRestartTask}
+            handleStartTasks={handleStartTasks}
+            handleFinishTask={handleFinishTask}
           />
         </Col>
       </Row>

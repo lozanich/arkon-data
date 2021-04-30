@@ -13,6 +13,7 @@ export const buildFakeTask = () => {
     advance,
     percentAdvance,
     done: percentAdvance === 100 ? true : false,
+    status: "stop", // cases: stop, pause, start
     createdAt: new Date().getTime(),
     updatedAt: new Date().getTime(),
   };

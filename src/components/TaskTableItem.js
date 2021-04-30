@@ -13,7 +13,7 @@ export const TaskTableItem = ({ item, id, handleDelete, handleEdit }) => {
         <td>{formatData(item.duration, "minutes")}</td>
         <td>{formatData(item.advance, "minutes")}</td>
         <td>{item.percentAdvance.toFixed(1)}%</td>
-        <td>{item.done === 100 ? "Terminada" : "No terminada"}</td>
+        <td>{item.done === true ? "Terminada" : "No terminada"}</td>
         <td>
           <ButtonGroup aria-label="Basic example">
             <Button

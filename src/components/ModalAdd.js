@@ -85,17 +85,19 @@ export const ModalAdd = ({
 
     const newTask = {
       id: editTask ? editTask.id : faker.datatype.uuid(),
-      name,
-      description,
-      duration: duration.value,
-      advance: 0,
-      percentAdvance: 0,
-      done: false,
-      createdAt: new Date().getTime(),
+      name: editTask ? name : name,
+      description: editTask ? description : description,
+      duration: editTask ? duration.value : duration.value,
+      advance: editTask ? editTask.advance : 0,
+      percentAdvance: editTask ? editTask.percentAdvance : 0,
+      done: editTask ? editTask.done : false,
+      createdAt: editTask ? editTask.createdAt : new Date().getTime(),
       updatedAt: new Date().getTime(),
     };
 
     if (editTask) {
+      // calculate new percent advance
+      newTask.percentAdvance = (100 * newTask.advance) / newTask.duration;
       handleEditTask(newTask)
     } else {
       handleAddTask(newTask);

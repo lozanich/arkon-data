@@ -1,24 +1,36 @@
 import React, {useEffect, useState} from 'react'
 import { Row, Col, Button, Card } from "react-bootstrap";
 import { formatData } from "../util/formatData"
-import { BsFillPauseFill, BsFillStopFill, BsArrowRepeat } from "react-icons/bs";
+import {
+  BsFillPauseFill,
+  BsFillStopFill,
+  BsArrowRepeat,
+  BsFillStopwatchFill,
+} from "react-icons/bs";
 
 export const Timer = React.memo(
   ({
+    statusTask,
     runningTask,
     timeFirstTask,
     handlePauseTask,
     handleStopTask,
     handleRestartTask,
+    handleStartTasks,
+    handleFinishTask,
   }) => {
     const [counter, setCounter] = useState(parseInt(timeFirstTask));
 
     // renders counter new calculate
     useEffect(() => {
-      const timer =
-        counter > 0 && setInterval(() => setCounter(counter - 1), 1000);
-      return () => clearInterval(timer);
-    }, [counter]);
+      if (statusTask === "start") {
+        const timer =
+          counter > 0 && setInterval(() => setCounter(counter - 1), 1000);
+        return () => clearInterval(timer);
+      } else {
+        return counter;
+      }
+    }, [counter, statusTask]);
 
     // restart counter new value task
     useEffect(() => {
@@ -39,25 +51,36 @@ export const Timer = React.memo(
                 style={{ "padding-top": "10px" }}
                 className="text-center"
                 sm={12}
-                md={4}
+                md={3}
               >
-                <Button
-                  onClick={() => handlePauseTask(runningTask)}
-                  variant="outline-success"
-                  className="my-1"
-                  block
-                >
-                  Pausar <BsFillPauseFill />
-                </Button>
+                {statusTask === "start" || statusTask === "stop" ? (
+                  <Button
+                    onClick={() => handlePauseTask(runningTask, counter)}
+                    variant="outline-success"
+                    className="my-1"
+                    block
+                  >
+                    Pausar <BsFillPauseFill />
+                  </Button>
+                ) : (
+                  <Button
+                    onClick={() => handleStartTasks()}
+                    variant="outline-success"
+                    className="my-1"
+                    block
+                  >
+                    Reanudar <BsFillPauseFill />
+                  </Button>
+                )}
               </Col>
               <Col
                 style={{ "padding-top": "10px" }}
                 className="text-center"
                 sm={12}
-                md={4}
+                md={3}
               >
                 <Button
-                  onClick={() => handleStopTask(runningTask)}
+                  onClick={() => handleStopTask(runningTask, counter)}
                   variant="outline-warning"
                   className="my-1"
                   block
@@ -69,15 +92,30 @@ export const Timer = React.memo(
                 style={{ "padding-top": "10px" }}
                 className="text-center"
                 sm={12}
-                md={4}
+                md={3}
               >
                 <Button
-                  onClick={() => handleRestartTask(runningTask)}
+                  onClick={() => handleRestartTask(runningTask, counter)}
                   variant="outline-danger"
                   className="my-1"
                   block
                 >
                   Reiniciar <BsArrowRepeat />
+                </Button>
+              </Col>
+              <Col
+                style={{ "padding-top": "10px" }}
+                className="text-center"
+                sm={12}
+                md={3}
+              >
+                <Button
+                  onClick={() => handleFinishTask(runningTask, counter)}
+                  variant="outline-warning"
+                  className="my-1"
+                  block
+                >
+                  Finalizar <BsFillStopwatchFill />
                 </Button>
               </Col>
             </Row>
