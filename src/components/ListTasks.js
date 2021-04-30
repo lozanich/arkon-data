@@ -22,16 +22,15 @@ export const ListTasks = () => {
 
   // var set state close modal
   const handleCloseModal = () => {
-    setEditTask("")
+    setEditTask("");
     setShow(false);
   };
-
 
   // var set state open modal
   const handleShow = () => setShow(true);
 
   const handleAddTask = (task) => {
-    console.log(task)
+    console.log(task);
     console.log("Agregando nueva tarea");
     dispatch({
       type: "add",
@@ -40,7 +39,7 @@ export const ListTasks = () => {
   };
 
   // init values task
-  const [tasks, dispatch] = useReducer(taskReducer, [], init)
+  const [tasks, dispatch] = useReducer(taskReducer, [], init);
   console.log(tasks);
 
   // function generate random tasks
@@ -63,11 +62,11 @@ export const ListTasks = () => {
     localStorage.setItem("tasks", JSON.stringify(localTasks));
   };
 
-  const [editTask, setEditTask] = useState("")
+  const [editTask, setEditTask] = useState("");
   const handleEdit = (task) => {
-    setShow(true)
-    setEditTask(task)
-  }
+    setShow(true);
+    setEditTask(task);
+  };
 
   const handleEditTask = (task) => {
     // dispatch edit task
@@ -75,7 +74,7 @@ export const ListTasks = () => {
       type: "edit",
       payload: task,
     });
-  }
+  };
 
   // function to delete one task
   const handleDelete = (item) => {
@@ -89,26 +88,28 @@ export const ListTasks = () => {
   };
 
   // init timer in 0
-  const [timer, setTimer] = useState(0)
-  const [runningTask, setRunningTask] = useState("")
-
+  const [timeFirstTask, setTimeFirstTask] = useState(0);
+  const [runningTask, setRunningTask] = useState("");
 
   // action button start last task
   const handleStartTasks = () => {
-    console.log('start task')
-    const lastTask = tasks.find(item => item.done === false);
-    setRunningTask(lastTask)
-    setTimer(lastTask.duration - lastTask.advance);
-  }
+    console.log("start task");
+    const lastTask = tasks.find((item) => item.done === false);
+    setRunningTask(lastTask);
+    setTimeFirstTask(lastTask.duration - lastTask.advance);
+  };
 
+  // function pause countdown
   const handlePauseTask = (task) => {
-    console.log("Pausando la tarea", task)
-  }
+    console.log("Pausando la tarea", task);
+  };
 
+  // function stop countdown
   const handleStopTask = (task) => {
     console.log("Deteniendo la tarea", task);
-  }
+  };
 
+  // function restart countdown
   const handleRestartTask = (task) => {
     console.log("Reiniciando la tarea", task);
   };
@@ -124,7 +125,7 @@ export const ListTasks = () => {
         <Col className="text-center" sm={12} md={{ span: 6, offset: 6 }}>
           <Timer
             runningTask={runningTask}
-            timeFirstTask={timer}
+            timeFirstTask={timeFirstTask}
             handlePauseTask={handlePauseTask}
             handleStopTask={handleStopTask}
             handleRestartTask={handleRestartTask}
