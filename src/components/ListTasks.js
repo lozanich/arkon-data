@@ -3,7 +3,11 @@ import "../styles/listTask.css";
 import { Row, Col, Button } from "react-bootstrap";
 import { taskReducer } from "../hooks/taskReducer";
 import { buildFakeTask } from "../util/buildFakeTask";
-import { BsPlusCircle, BsFillAlarmFill } from "react-icons/bs";
+import {
+  BsPlusCircle,
+  BsFillAlarmFill,
+  BsCollectionPlay,
+} from "react-icons/bs";
 import { ModalAdd } from "../components/ModalAdd";
 import { TaskTable } from "../components/TaskTable";
 import {Timer} from "../components/Timer"
@@ -84,13 +88,30 @@ export const ListTasks = () => {
     localStorage.setItem("tasks", JSON.stringify(tasks));
   };
 
+  // init timer in 0
   const [timer, setTimer] = useState(0)
+  const [runningTask, setRunningTask] = useState("")
 
+
+  // action button start last task
   const handleStartTasks = () => {
     console.log('start task')
     const lastTask = tasks.find(item => item.done === false);
+    setRunningTask(lastTask)
     setTimer(lastTask.duration - lastTask.advance);
   }
+
+  const handlePauseTask = (task) => {
+    console.log("Pausando la tarea", task)
+  }
+
+  const handleStopTask = (task) => {
+    console.log("Deteniendo la tarea", task);
+  }
+
+  const handleRestartTask = (task) => {
+    console.log("Reiniciando la tarea", task);
+  };
 
   return (
     <>
@@ -100,30 +121,36 @@ export const ListTasks = () => {
         </Col>
       </Row>
       <Row>
-        <Col className="text-left" sm={6}>
-          <Timer timeFirstTask={timer} />
+        <Col className="text-center" sm={12} md={{ span: 6, offset: 6 }}>
+          <Timer
+            runningTask={runningTask}
+            timeFirstTask={timer}
+            handlePauseTask={handlePauseTask}
+            handleStopTask={handleStopTask}
+            handleRestartTask={handleRestartTask}
+          />
         </Col>
       </Row>
       <Row className="justify-content-md-center">
-        <Col className="text-left" sm={2}>
-          <Button onClick={handleShow} variant="success" className="my-1">
+        <Col className="text-left" md={3} sm={12}>
+          <Button onClick={handleShow} variant="success" className="my-1" block>
             Agregar nueva <BsPlusCircle />
           </Button>
         </Col>
-        <Col className="text-center" sm={8}>
+        <Col className="text-center" md={6} sm={12}>
           <Button onClick={handleStartTasks} className="my-1" block>
-            Comenzar tareas <BsFillAlarmFill />
+            Comenzar tareas <BsCollectionPlay />
           </Button>
         </Col>
-        <Col className="text-right" sm={2}>
-          <Button onClick={handleRandomTasks} className="my-1">
+        <Col className="text-right" md={3} sm={12}>
+          <Button onClick={handleRandomTasks} className="my-1" block>
             Generar tareas <BsFillAlarmFill />
           </Button>
         </Col>
       </Row>
       <hr />
       <Row className="justify-content-md-center">
-        <Col className="text-right" sm={10}>
+        <Col className="text-right" md={8} sm={12}>
           <TaskTable
             tasks={tasks}
             handleDelete={handleDelete}
@@ -131,7 +158,7 @@ export const ListTasks = () => {
           />
         </Col>
 
-        <Col className="text-right" sm={2}>
+        <Col className="text-right" md={4} sm={12}>
           Grafica
         </Col>
       </Row>
