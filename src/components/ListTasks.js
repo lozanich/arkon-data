@@ -1,6 +1,6 @@
 import React, { useReducer, useState } from "react";
 import "../styles/listTask.css";
-import { Row, Col, Button } from "react-bootstrap";
+import { Row, Col, Button, Dropdown } from "react-bootstrap";
 import { taskReducer } from "../hooks/taskReducer";
 import { buildFakeTask } from "../util/buildFakeTask";
 import {
@@ -10,7 +10,9 @@ import {
 } from "react-icons/bs";
 import { ModalAdd } from "../components/ModalAdd";
 import { TaskTable } from "../components/TaskTable";
-import {Timer} from "../components/Timer"
+import { Timer } from "../components/Timer"
+import { FinishedTask } from "../components/FinishedTask"
+import {PendingTask} from "../components/PendingTask"
 
 const init = () => {
   return JSON.parse(localStorage.getItem("tasks")) || [];
@@ -29,9 +31,8 @@ export const ListTasks = () => {
   // var set state open modal
   const handleShow = () => setShow(true);
 
+  // Function to add new task
   const handleAddTask = (task) => {
-    console.log(task);
-    console.log("Agregando nueva tarea");
     dispatch({
       type: "add",
       payload: task,
@@ -41,6 +42,8 @@ export const ListTasks = () => {
   // init values task
   const [tasks, dispatch] = useReducer(taskReducer, [], init);
   console.log(tasks);
+
+  const [filterTask, setFilterTask] = useState({typeFilter: "", value: ""})
 
   // function generate random tasks
   const handleRandomTasks = () => {
@@ -59,6 +62,7 @@ export const ListTasks = () => {
         payload: task,
       });
     }
+    setFilterTask({ typeFilter: "", value: "" });
     localStorage.setItem("tasks", JSON.stringify(localTasks));
   };
 
@@ -154,6 +158,10 @@ export const ListTasks = () => {
     setTimeFirstTask(0);
   }
 
+  const handleFilterTask = (filter, value) => {
+    setFilterTask({typeFilter: filter, value})
+  }
+
   return (
     <>
       <Row className="justify-content-md-center">
@@ -162,7 +170,20 @@ export const ListTasks = () => {
         </Col>
       </Row>
       <Row>
-        <Col className="text-center" sm={12} md={{ span: 6, offset: 6 }}>
+        <Col style={{ paddingTop: "10px" }} sm={12} md={12} lg={3} xs={12}>
+          <FinishedTask tasks={tasks} handleFilterTask={handleFilterTask} />
+        </Col>
+        <Col style={{ paddingTop: "10px" }} sm={12} md={12} lg={3} xs={12}>
+          <PendingTask tasks={tasks} handleFilterTask={handleFilterTask} />
+        </Col>
+        <Col
+          style={{ paddingTop: "10px" }}
+          className="text-center"
+          sm={12}
+          md={12}
+          lg={6}
+          xs={12}
+        >
           <Timer
             statusTask={statusTask}
             runningTask={runningTask}
@@ -175,13 +196,37 @@ export const ListTasks = () => {
           />
         </Col>
       </Row>
-      <Row className="justify-content-md-center">
+      <Row style={{ paddingTop: "10px" }} className="justify-content-md-center">
+        <Col className="text-left" md={3} sm={12}>
+          <Dropdown>
+            <Dropdown.Toggle
+              variant="success"
+              id="dropdown-basic"
+              className="my-1"
+              block
+            >
+              Filtar por duración
+            </Dropdown.Toggle>
+
+            <Dropdown.Menu>
+              <Dropdown.Item onClick={() => handleFilterTask("duration30", 1800)}>
+                30 minutos o menos
+              </Dropdown.Item>
+              <Dropdown.Item onClick={() => handleFilterTask("duration60", 3600)}>
+                30 minutos a 60 minutos
+              </Dropdown.Item>
+              <Dropdown.Item onClick={() => handleFilterTask("duration120", 7200)}>
+                Más de 60 minutos
+              </Dropdown.Item>
+            </Dropdown.Menu>
+          </Dropdown>
+        </Col>
         <Col className="text-left" md={3} sm={12}>
           <Button onClick={handleShow} variant="success" className="my-1" block>
             Agregar nueva <BsPlusCircle />
           </Button>
         </Col>
-        <Col className="text-center" md={6} sm={12}>
+        <Col className="text-center" md={3} sm={12}>
           <Button onClick={handleStartTasks} className="my-1" block>
             Comenzar tareas <BsCollectionPlay />
           </Button>
@@ -199,6 +244,7 @@ export const ListTasks = () => {
             tasks={tasks}
             handleDelete={handleDelete}
             handleEdit={handleEdit}
+            filterTask={filterTask}
           />
         </Col>
 

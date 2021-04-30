@@ -48,7 +48,7 @@ export const Timer = React.memo(
             </Row>
             <Row>
               <Col
-                style={{ "padding-top": "10px" }}
+                style={{ paddingTop: "10px" }}
                 className="text-center"
                 sm={12}
                 md={3}
@@ -74,7 +74,7 @@ export const Timer = React.memo(
                 )}
               </Col>
               <Col
-                style={{ "padding-top": "10px" }}
+                style={{ paddingTop: "10px" }}
                 className="text-center"
                 sm={12}
                 md={3}
@@ -89,7 +89,7 @@ export const Timer = React.memo(
                 </Button>
               </Col>
               <Col
-                style={{ "padding-top": "10px" }}
+                style={{ paddingTop: "10px" }}
                 className="text-center"
                 sm={12}
                 md={3}
@@ -104,7 +104,7 @@ export const Timer = React.memo(
                 </Button>
               </Col>
               <Col
-                style={{ "padding-top": "10px" }}
+                style={{ paddingTop: "10px" }}
                 className="text-center"
                 sm={12}
                 md={3}

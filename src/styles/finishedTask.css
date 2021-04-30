@@ -1,0 +1,19 @@
+.span-number {
+    font-size: 25px;
+    color: #7A9A01;
+}
+
+.span-number-orange {
+    font-size: 25px;
+    color: #EF9600;
+}
+
+.card-finished{
+    padding-top: 0px;
+    padding-bottom: 0px;
+}
+
+.card-body-counter {
+    padding-top: 9px;
+    padding-bottom: 5px;
+}
