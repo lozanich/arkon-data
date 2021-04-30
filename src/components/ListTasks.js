@@ -93,7 +93,9 @@ export const ListTasks = () => {
 
   // init timer in 0
   const [timeFirstTask, setTimeFirstTask] = useState(0);
+  // state to set actual task running
   const [runningTask, setRunningTask] = useState("");
+  // state to set status actual task
   const [statusTask, setStatusTask] = useState("stop")
 
   // action button start last task
@@ -144,6 +146,7 @@ export const ListTasks = () => {
     // setTimeFirstTask(task.duration);    
   };
 
+  // function to mark finish task
   const handleFinishTask = (task, counter) => { 
     console.log("Reiniciando la tarea", task, counter);
 
@@ -158,6 +161,7 @@ export const ListTasks = () => {
     setTimeFirstTask(0);
   }
 
+  // function to manage tasks filter
   const handleFilterTask = (filter, value) => {
     setFilterTask({typeFilter: filter, value})
   }
