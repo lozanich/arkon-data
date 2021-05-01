@@ -12,7 +12,8 @@ import { ModalAdd } from "../components/ModalAdd";
 import { TaskTable } from "../components/TaskTable";
 import { Timer } from "../components/Timer"
 import { FinishedTask } from "../components/FinishedTask"
-import {PendingTask} from "../components/PendingTask"
+import { PendingTask } from "../components/PendingTask"
+import {GraphicTask} from "../components/GraphicTask"
 
 const init = () => {
   return JSON.parse(localStorage.getItem("tasks")) || [];
@@ -154,6 +155,7 @@ export const ListTasks = () => {
     task.advance = task.duration - counter;
     task.percentAdvance = (100 * task.advance) / task.duration;
     task.done = true
+    task.finishedAt = new Date();
      dispatch({
        type: "edit",
        payload: task,
@@ -243,7 +245,7 @@ export const ListTasks = () => {
       </Row>
       <hr />
       <Row className="justify-content-md-center">
-        <Col className="text-right" md={8} sm={12}>
+        <Col className="text-right" md={6} sm={12}>
           <TaskTable
             tasks={tasks}
             handleDelete={handleDelete}
@@ -252,8 +254,8 @@ export const ListTasks = () => {
           />
         </Col>
 
-        <Col className="text-right" md={4} sm={12}>
-          Grafica
+        <Col className="text-right" md={6} sm={12}>
+          <GraphicTask tasks={ tasks }/>
         </Col>
       </Row>
 

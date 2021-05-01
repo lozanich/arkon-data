@@ -3,7 +3,6 @@ import {
   BrowserRouter as Router,
   Switch,
   Route,
-  withRouter,
 } from "react-router-dom";
 import { NavbarBootstrap } from "../components/ui/NavbarBootstrap";
 import { ListTasks } from "../components/ListTasks";

@@ -1,7 +1,8 @@
 import React from "react";
 import { BsTrash, BsPencil } from "react-icons/bs";
 import { Button, ButtonGroup } from "react-bootstrap";
-import {formatData} from "../util/formatData"
+import { formatData } from "../util/formatData"
+import Moment from "react-moment"
 
 export const TaskTableItem = ({ item, id, handleDelete, handleEdit }) => {
   return (
@@ -14,6 +15,9 @@ export const TaskTableItem = ({ item, id, handleDelete, handleEdit }) => {
         <td>{formatData(item.advance, "minutes")}</td>
         <td>{item.percentAdvance.toFixed(1)}%</td>
         <td>{item.done === true ? "Terminada" : "No terminada"}</td>
+        <td>
+          <Moment format="YYYY/MM/DD">{item.createdAt}</Moment>{" "}
+        </td>
         <td>
           <ButtonGroup aria-label="Basic example">
             <Button

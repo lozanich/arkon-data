@@ -1,9 +1,10 @@
-import React, {useEffect} from "react";
+/* eslint-disable no-self-assign */
+import React from "react";
 import { Table } from "react-bootstrap";
 import { TaskTableItem } from "../components/TaskTableItem";
 
 export const TaskTable = ({ tasks, handleDelete, handleEdit, filterTask }) => {
-  console.log(filterTask);
+  // console.log(filterTask);
   
   if (filterTask) {
     const { typeFilter, value } = filterTask;
@@ -26,7 +27,7 @@ export const TaskTable = ({ tasks, handleDelete, handleEdit, filterTask }) => {
         ) : tasks = tasks
   }
 
-  console.log(tasks);
+  // console.log(tasks);
 
   return (
     <>
@@ -40,6 +41,7 @@ export const TaskTable = ({ tasks, handleDelete, handleEdit, filterTask }) => {
             <th>Avance</th>
             <th>Porcentaje Avance</th>
             <th>Estatus</th>
+            <th>Fecha creación</th>
             <th>Acciones</th>
           </tr>
         </thead>

@@ -1,13 +1,9 @@
 import React from "react";
 import { Navbar, Nav } from "react-bootstrap";
-import { Link, withRouter, NavLink } from "react-router-dom";
+import { Link } from "react-router-dom";
 
-export const NavbarBootstrap = (props) => {
-  console.log(props);
-  const getNavLinkClass = (path) => {
-    return this.props.location.pathname === path ? "active" : "";
-  };
-
+export const NavbarBootstrap = () => {
+  
   return (
     <Navbar collapseOnSelect expand="lg" bg="dark" variant="dark">
       <Navbar.Brand as={Link} to="/">
