@@ -27,10 +27,12 @@ export const GraphicTask = ({ tasks }) => {
     tasks = lodash.orderBy(tasks, ['createdAt'])
     // console.log(tasks);
 
+    // vars tick values
     const tickValues = []
     const tickFormat = []
     const duration1 = []
     const advance1 = [];
+    // format data to graphic
     tasks.forEach((item, index) => {
         duration1.push({ quarter: index + 1, earnings: parseInt(item.duration / 60) });
         advance1.push({
@@ -46,6 +48,7 @@ export const GraphicTask = ({ tasks }) => {
         <Row>
           <Col className="text-center" md={12}>
             <VictoryChart domainPadding={0} theme={VictoryTheme.material}>
+              {/* legends tasks */}
               <VictoryLegend
                 x={100}
                 y={10}
@@ -63,6 +66,7 @@ export const GraphicTask = ({ tasks }) => {
                 ]}
               />
 
+              {/* bar X */}
               <VictoryAxis
                 tickValues={tickValues}
                 tickFormat={tickFormat}
@@ -79,6 +83,7 @@ export const GraphicTask = ({ tasks }) => {
                   tickLabels: { fontSize: 8, padding: 10, angle: 90 },
                 }}
               />
+              {/* bar Y */}
               <VictoryAxis
                 dependentAxis
                 offsetX={40}
