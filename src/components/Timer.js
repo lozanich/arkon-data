@@ -1,6 +1,7 @@
-import React, {useEffect, useState} from 'react'
+import React, {useEffect, useState, useReducer} from 'react'
 import { Row, Col, Button, Card } from "react-bootstrap";
 import { formatData } from "../util/formatData"
+import {taskReducer} from "../hooks/taskReducer"
 import {
   BsFillPauseFill,
   BsFillStopFill,
@@ -19,6 +20,7 @@ export const Timer = React.memo(
     handleStartTasks,
     handleFinishTask,
   }) => {
+    // init values task
     const [counter, setCounter] = useState(parseInt(timeFirstTask));
 
     // renders counter new calculate
@@ -26,11 +28,18 @@ export const Timer = React.memo(
       if (statusTask === "start") {
         const timer =
           counter > 0 && setInterval(() => setCounter(counter - 1), 1000);
+        
+        localStorage.setItem("activeCounterTask", JSON.stringify(counter));
+        
+        // finish task if time is complete
+        if (counter === 0 && runningTask) {
+          handleFinishTask(runningTask, counter);
+        }
         return () => clearInterval(timer);
       } else {
         return counter;
       }
-    }, [counter, statusTask]);
+    }, [counter, statusTask, handleFinishTask, runningTask]);
 
     // restart counter new value task
     useEffect(() => {
@@ -43,7 +52,7 @@ export const Timer = React.memo(
           <Card.Body>
             <Row>
               <Col className="text-center" md={12}>
-                {formatData(counter, "minutes")}
+                {counter ? formatData(counter, "minutes"): 'Inicia una tarea'}
               </Col>
             </Row>
             <Row>

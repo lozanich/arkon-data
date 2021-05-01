@@ -14,8 +14,9 @@ import moment from "moment"
 import lodash from "lodash"
 
 export const GraphicTask = ({ tasks }) => {
-    const actualWeek = moment().isoWeek()
-    console.log(actualWeek)
+    // const actualWeek = moment().isoWeek()
+  // console.log(actualWeek)
+  // console.log(tasks);
 
     tasks = tasks
       .map((x) => {
@@ -47,7 +48,7 @@ export const GraphicTask = ({ tasks }) => {
       <>
         <Row>
           <Col className="text-center" md={12}>
-            <VictoryChart domainPadding={0} theme={VictoryTheme.material}>
+            {tasks.length > 0 && (<VictoryChart domainPadding={0} theme={VictoryTheme.material}>
               {/* legends tasks */}
               <VictoryLegend
                 x={100}
@@ -138,7 +139,7 @@ export const GraphicTask = ({ tasks }) => {
                   />
                 </VictoryStack>
               </VictoryGroup>
-            </VictoryChart>
+            </VictoryChart>)}
           </Col>
         </Row>
       </>

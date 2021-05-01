@@ -4,6 +4,7 @@ export const taskReducer = (state = [], action) => {
       return [...state, action.payload];
 
     case "edit":
+      console.log(state)
       console.log(action.payload);
       const taskEdit = state.find((item) => item.id === action.payload.id);
       const index = state.indexOf(taskEdit);

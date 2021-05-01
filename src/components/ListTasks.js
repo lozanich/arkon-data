@@ -32,19 +32,22 @@ export const ListTasks = () => {
   // var set state open modal
   const handleShow = () => setShow(true);
 
+  // init values task
+  const [tasks, dispatch] = useReducer(taskReducer, [], init);
+  console.log(tasks);
+
   // Function to add new task
   const handleAddTask = (task) => {
     dispatch({
       type: "add",
       payload: task,
     });
+    tasks.push(task);
+    console.log(tasks);
+    localStorage.setItem("tasks", JSON.stringify(tasks));
   };
 
-  // init values task
-  const [tasks, dispatch] = useReducer(taskReducer, [], init);
-  console.log(tasks);
-
-  const [filterTask, setFilterTask] = useState({typeFilter: "", value: ""})
+  const [filterTask, setFilterTask] = useState({ typeFilter: "", value: "" });
 
   // function generate random tasks
   const handleRandomTasks = () => {
@@ -93,11 +96,11 @@ export const ListTasks = () => {
   };
 
   // init timer in 0
-  const [timeFirstTask, setTimeFirstTask] = useState(0);
+  const [timeFirstTask, setTimeFirstTask] = useState("");
   // state to set actual task running
   const [runningTask, setRunningTask] = useState("");
   // state to set status actual task
-  const [statusTask, setStatusTask] = useState("stop")
+  const [statusTask, setStatusTask] = useState("stop");
 
   // action button start last task
   const handleStartTasks = () => {
@@ -105,7 +108,7 @@ export const ListTasks = () => {
     const lastTask = tasks.find((item) => item.done === false);
     setRunningTask(lastTask);
     setTimeFirstTask(lastTask.duration - lastTask.advance);
-    setStatusTask("start")
+    setStatusTask("start");
   };
 
   // function pause countdown
@@ -144,29 +147,29 @@ export const ListTasks = () => {
       payload: task,
     });
     setTimeFirstTask(0);
-    // setTimeFirstTask(task.duration);    
+    // setTimeFirstTask(task.duration);
   };
 
   // function to mark finish task
-  const handleFinishTask = (task, counter) => { 
+  const handleFinishTask = (task, counter) => {
     console.log("Reiniciando la tarea", task, counter);
 
     setStatusTask("stop");
     task.advance = task.duration - counter;
     task.percentAdvance = (100 * task.advance) / task.duration;
-    task.done = true
+    task.done = true;
     task.finishedAt = new Date();
-     dispatch({
-       type: "edit",
-       payload: task,
-     });
+    dispatch({
+      type: "edit",
+      payload: task,
+    });
     setTimeFirstTask(0);
-  }
+  };
 
   // function to manage tasks filter
   const handleFilterTask = (filter, value) => {
-    setFilterTask({typeFilter: filter, value})
-  }
+    setFilterTask({ typeFilter: filter, value });
+  };
 
   return (
     <>
@@ -215,13 +218,19 @@ export const ListTasks = () => {
             </Dropdown.Toggle>
 
             <Dropdown.Menu>
-              <Dropdown.Item onClick={() => handleFilterTask("duration30", 1800)}>
+              <Dropdown.Item
+                onClick={() => handleFilterTask("duration30", 1800)}
+              >
                 30 minutos o menos
               </Dropdown.Item>
-              <Dropdown.Item onClick={() => handleFilterTask("duration60", 3600)}>
+              <Dropdown.Item
+                onClick={() => handleFilterTask("duration60", 3600)}
+              >
                 30 minutos a 60 minutos
               </Dropdown.Item>
-              <Dropdown.Item onClick={() => handleFilterTask("duration120", 7200)}>
+              <Dropdown.Item
+                onClick={() => handleFilterTask("duration120", 7200)}
+              >
                 Más de 60 minutos
               </Dropdown.Item>
             </Dropdown.Menu>
@@ -255,7 +264,7 @@ export const ListTasks = () => {
         </Col>
 
         <Col className="text-right" md={6} sm={12}>
-          <GraphicTask tasks={ tasks }/>
+          <GraphicTask tasks={tasks} />
         </Col>
       </Row>
 

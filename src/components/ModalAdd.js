@@ -35,7 +35,7 @@ export const ModalAdd = ({
   const [otherDuration, setOtherDuration] = useState("60:00");
 
   useEffect(() => {
-    console.log("use effect");
+    // console.log("use effect");
     const { name, description, duration } = editTask;
     if (editTask) {
       setValues({
@@ -91,8 +91,8 @@ export const ModalAdd = ({
       advance: editTask ? editTask.advance : 0,
       percentAdvance: editTask ? editTask.percentAdvance : 0,
       done: editTask ? editTask.done : false,
-      createdAt: editTask ? editTask.createdAt : new Date().getTime(),
-      updatedAt: new Date().getTime(),
+      createdAt: editTask ? editTask.createdAt : new Date(),
+      updatedAt: new Date(),
     };
 
     if (editTask) {
