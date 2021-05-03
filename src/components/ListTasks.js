@@ -19,6 +19,10 @@ const init = () => {
   return JSON.parse(localStorage.getItem("tasks")) || [];
 };
 
+const initTimer = () => {
+  return JSON.parse(localStorage.getItem("activeCounterTask")) || "";
+}
+
 export const ListTasks = () => {
   // var set state show/hide modal
   const [show, setShow] = useState(false);
@@ -82,6 +86,7 @@ export const ListTasks = () => {
       type: "edit",
       payload: task,
     });
+    localStorage.setItem("tasks", JSON.stringify(tasks));
   };
 
   // function to delete one task
@@ -96,7 +101,7 @@ export const ListTasks = () => {
   };
 
   // init timer in 0
-  const [timeFirstTask, setTimeFirstTask] = useState("");
+  const [timeFirstTask, setTimeFirstTask] = useState(initTimer);
   // state to set actual task running
   const [runningTask, setRunningTask] = useState("");
   // state to set status actual task
@@ -204,6 +209,7 @@ export const ListTasks = () => {
             handleRestartTask={handleRestartTask}
             handleStartTasks={handleStartTasks}
             handleFinishTask={handleFinishTask}
+            handleEditTask={handleEditTask}
           />
         </Col>
       </Row>
