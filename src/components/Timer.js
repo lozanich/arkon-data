@@ -30,9 +30,11 @@ export const Timer = React.memo(
         const timer =
           counter > 0 && setInterval(() => setCounter(counter - 1), 1000);
 
+        // save in local storage actual counter
         localStorage.setItem("activeCounterTask", JSON.stringify(counter));
         runningTask.advance = runningTask.duration - counter;
-        runningTask.percentAdvance = (100 * runningTask.advance) / runningTask.duration;
+        runningTask.percentAdvance =
+          (100 * runningTask.advance) / runningTask.duration;
         handleEditTask(runningTask);
 
         // // finish task if time is complete
@@ -43,7 +45,7 @@ export const Timer = React.memo(
       } else {
         return counter;
       }
-    }, [counter, statusTask, handleFinishTask, runningTask]);
+    }, [counter, statusTask, handleFinishTask, runningTask, handleEditTask]);
 
     // restart counter new value task
     useEffect(() => {
