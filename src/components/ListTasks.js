@@ -13,7 +13,9 @@ import { TaskTable } from "../components/TaskTable";
 import { Timer } from "../components/Timer"
 import { FinishedTask } from "../components/FinishedTask"
 import { PendingTask } from "../components/PendingTask"
-import {GraphicTask} from "../components/GraphicTask"
+import { GraphicTask } from "../components/GraphicTask"
+import BootstrapSwitchButton from "bootstrap-switch-button-react";
+import {CardItem} from "../components/CardItem"
 
 const init = () => {
   return JSON.parse(localStorage.getItem("tasks")) || [];
@@ -26,6 +28,9 @@ const initTimer = () => {
 export const ListTasks = () => {
   // var set state show/hide modal
   const [show, setShow] = useState(false);
+  
+  // var set state mode
+  const [mode, setMode] = useState("card")
 
   // var set state close modal
   const handleCloseModal = () => {
@@ -261,17 +266,43 @@ export const ListTasks = () => {
         </Col>
       </Row>
       <hr />
-      <Row className="justify-content-md-center">
-        <Col className="text-right" md={6} sm={12}>
-          <TaskTable
-            tasks={tasks}
-            handleDelete={handleDelete}
-            handleEdit={handleEdit}
-            filterTask={filterTask}
+      <Row>
+        <Col md={2} sm={2}>
+          Modo tabla / tarjeta:
+        </Col>
+        <Col md={2} sm={2}>
+          <BootstrapSwitchButton
+            onChange={(checked) => {
+              console.log(checked);
+              console.log("button switch");
+              checked ? setMode("table") : setMode("card");
+            }}
+            checked={true}
+            size="xs"
           />
         </Col>
+      </Row>
+      <hr />
+      <Row className="justify-content-md-center">
+        <Col className="text-center" md={mode === "table" ? 6 : 3} sm={12}>
+          {mode === "table" ? (
+            <TaskTable
+              tasks={tasks}
+              handleDelete={handleDelete}
+              handleEdit={handleEdit}
+              filterTask={filterTask}
+            />
+          ) : (
+            <CardItem
+              tasks={tasks}
+              handleDelete={handleDelete}
+              handleEdit={handleEdit}
+              filterTask={filterTask}
+            />
+          )}
+        </Col>
 
-        <Col className="text-right" md={6} sm={12}>
+        <Col className="text-right" md={mode === "table" ? 6 : 9} sm={12}>
           <GraphicTask tasks={tasks} />
         </Col>
       </Row>

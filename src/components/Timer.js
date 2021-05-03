@@ -1,7 +1,6 @@
-import React, {useEffect, useState, useReducer} from 'react'
+import React, {useEffect, useState} from 'react'
 import { Row, Col, Button, Card } from "react-bootstrap";
 import { formatData } from "../util/formatData"
-import {taskReducer} from "../hooks/taskReducer"
 import {
   BsFillPauseFill,
   BsFillStopFill,
