@@ -26,12 +26,13 @@ export const Timer = React.memo(
     // renders counter new calculate
     useEffect(() => {
       if (statusTask === "start") {
+        console.log(counter)
         const timer =
           counter > 0 && setInterval(() => setCounter(counter - 1), 1000);
         
-        localStorage.setItem("activeCounterTask", JSON.stringify(counter));
+        // localStorage.setItem("activeCounterTask", JSON.stringify(counter));
         
-        // finish task if time is complete
+        // // finish task if time is complete
         if (counter === 0 && runningTask) {
           handleFinishTask(runningTask, counter);
         }

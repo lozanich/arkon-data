@@ -106,6 +106,7 @@ export const ListTasks = () => {
   const handleStartTasks = () => {
     console.log("start task");
     const lastTask = tasks.find((item) => item.done === false);
+    console.log(lastTask)
     setRunningTask(lastTask);
     setTimeFirstTask(lastTask.duration - lastTask.advance);
     setStatusTask("start");
@@ -152,7 +153,7 @@ export const ListTasks = () => {
 
   // function to mark finish task
   const handleFinishTask = (task, counter) => {
-    console.log("Reiniciando la tarea", task, counter);
+    console.log("Finalizando la tarea", task, counter);
 
     setStatusTask("stop");
     task.advance = task.duration - counter;
@@ -164,6 +165,7 @@ export const ListTasks = () => {
       payload: task,
     });
     setTimeFirstTask(0);
+    localStorage.setItem("tasks", JSON.stringify(tasks));
   };
 
   // function to manage tasks filter
