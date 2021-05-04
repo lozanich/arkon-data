@@ -45,18 +45,6 @@ export const ListTasks = () => {
   const [tasks, dispatch] = useReducer(taskReducer, [], init);
   console.log(tasks);
 
-  useEffect(() => {
-    console.log("effect LIST TASK");
-    // const newTasks = tasks.map((item, index) => {
-    //   return { ...item, order: index + 1 };
-    // });
-    // // update state tasks
-    // dispatch({
-    //   type: "massive",
-    //   payload: newTasks,
-    // });
-  }, [tasks]);
-
   // Function to add new task
   const handleAddTask = (task) => {
     console.log(task)
