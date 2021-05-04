@@ -110,9 +110,12 @@ export const ModalAdd = ({
 
   // on change radio buttons
   const handleRadioChange = ({ target }) => {
+    console.log(target)
     if (target.value === "other") {
+      setCheckedOther(true);
       setDuration({ visibleOther: true, value: 3600 });
     } else {
+      setCheckedOther(false);
       const convertSeconds = parseInt(target.value) * 60;
       setDuration({ visibleOther: false, value: convertSeconds });
     }
@@ -142,6 +145,7 @@ export const ModalAdd = ({
     setDuration({ visibleOther: false, value: 0 });
     reset();
     handleCloseModal();
+    setCheckedOther(false);
     setCheckedOther(false);
     editTask = "";
   };

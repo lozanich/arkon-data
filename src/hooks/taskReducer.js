@@ -4,14 +4,12 @@ export const taskReducer = (state = [], action) => {
       return [...state, action.payload];
 
     case "edit":
-      console.log(state)
-      console.log(action.payload);
       const taskEdit = state.find((item) => item.id === action.payload.id);
       const index = state.indexOf(taskEdit);
-      console.log(index)
+
       if (index !== -1) {
         state[index] = action.payload;
-      }      
+      }
       return state;
 
     case "restart":
@@ -25,6 +23,9 @@ export const taskReducer = (state = [], action) => {
       return state.map((item) =>
         item.id === action.payload.id ? { ...item, done: !item.done } : item
       );
+
+    case "massive":
+      return state = action.payload;
     default:
       return state;
   }

@@ -22,11 +22,14 @@ export const Timer = React.memo(
   }) => {
     // init values task
     const [counter, setCounter] = useState(parseInt(timeFirstTask));
+    // restart counter new value task
+    useEffect(() => {
+      setCounter(parseInt(timeFirstTask));
+    }, [timeFirstTask]);
 
     // renders counter new calculate
     useEffect(() => {
       if (statusTask === "start") {
-        console.log(counter);
         const timer =
           counter > 0 && setInterval(() => setCounter(counter - 1), 1000);
 
@@ -39,6 +42,7 @@ export const Timer = React.memo(
 
         // // finish task if time is complete
         if (counter === 0 && runningTask) {
+          console.log("finish counter ");
           handleFinishTask(runningTask, counter);
         }
         return () => clearInterval(timer);
@@ -47,18 +51,13 @@ export const Timer = React.memo(
       }
     }, [counter, statusTask, handleFinishTask, runningTask, handleEditTask]);
 
-    // restart counter new value task
-    useEffect(() => {
-      setCounter(parseInt(timeFirstTask));
-    }, [timeFirstTask]);
-
     return (
       <>
         <Card>
           <Card.Body>
             <Row>
               <Col className="text-center" md={12}>
-                {counter ? formatData(counter, "minutes") : "Inicia una tarea"}
+                {counter && counter !== -1 ? formatData(counter, "minutes") : "Inicia una tarea"}
               </Col>
             </Row>
             <Row>

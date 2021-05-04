@@ -1,4 +1,4 @@
-import React, { useReducer, useState } from "react";
+import React, { useReducer, useState, useEffect } from "react";
 import "../styles/listTask.css";
 import { Row, Col, Button, Dropdown } from "react-bootstrap";
 import { taskReducer } from "../hooks/taskReducer";
@@ -45,8 +45,29 @@ export const ListTasks = () => {
   const [tasks, dispatch] = useReducer(taskReducer, [], init);
   console.log(tasks);
 
+  useEffect(() => {
+    console.log("effect LIST TASK");
+    // const newTasks = tasks.map((item, index) => {
+    //   return { ...item, order: index + 1 };
+    // });
+    // // update state tasks
+    // dispatch({
+    //   type: "massive",
+    //   payload: newTasks,
+    // });
+  }, [tasks]);
+
   // Function to add new task
   const handleAddTask = (task) => {
+    console.log(task)
+    const lastTask = tasks[tasks.length - 1]
+    console.log(lastTask);
+    if (lastTask) {
+      task.order = lastTask.order + 1;
+    } else {
+      task.order = 1;
+    }
+
     dispatch({
       type: "add",
       payload: task,
@@ -68,6 +89,7 @@ export const ListTasks = () => {
     const localTasks = [];
     for (let index = 0; index < 50; index++) {
       const task = buildFakeTask();
+      task.order = index + 1;
       localTasks.push(task);
       // set new task to state
       dispatch({
@@ -164,17 +186,21 @@ export const ListTasks = () => {
   // function to mark finish task
   const handleFinishTask = (task, counter) => {
     console.log("Finalizando la tarea", task, counter);
+    // update order task no completed
 
     setStatusTask("stop");
     task.advance = task.duration - counter;
     task.percentAdvance = (100 * task.advance) / task.duration;
     task.done = true;
     task.finishedAt = new Date();
+    task.order = 0;
+    
     dispatch({
       type: "edit",
       payload: task,
     });
-    setTimeFirstTask(0);
+    setTimeFirstTask(-1);
+    setRunningTask("")
     localStorage.setItem("tasks", JSON.stringify(tasks));
   };
 
@@ -182,6 +208,38 @@ export const ListTasks = () => {
   const handleFilterTask = (filter, value) => {
     setFilterTask({ typeFilter: filter, value });
   };
+
+  const [dragId, setDragId] = useState();
+
+  const handleDrag = (ev) => {
+    setDragId(ev.currentTarget.id);
+  };
+
+  const handleDrop = (ev) => {
+    const dragBox = tasks.find((box) => box.id === dragId);
+    const dropBox = tasks.find((box) => box.id === ev.currentTarget.id);
+    const dragBoxOrder = dragBox.order;
+    const dropBoxOrder = dropBox.order;
+    const newTasks = tasks.map((box) => {
+      // update order task
+      if (box.id === dragId) {
+        box.order = dropBoxOrder;
+      }
+      if (box.id === ev.currentTarget.id) {
+        box.order = dragBoxOrder;
+      }
+      return box;
+    });
+    localStorage.setItem("tasks", JSON.stringify(newTasks));
+
+    // update state tasks
+     dispatch({
+       type: "massive",
+       payload: newTasks,
+     });
+  };
+
+  
 
   return (
     <>
@@ -255,7 +313,12 @@ export const ListTasks = () => {
           </Button>
         </Col>
         <Col className="text-center" md={3} sm={12}>
-          <Button onClick={handleStartTasks} className="my-1" block>
+          <Button
+            disabled={tasks.filter((item) => item.done === false).length === 0}
+            onClick={handleStartTasks}
+            className="my-1"
+            block
+          >
             Comenzar tareas <BsCollectionPlay />
           </Button>
         </Col>
@@ -298,6 +361,8 @@ export const ListTasks = () => {
               handleDelete={handleDelete}
               handleEdit={handleEdit}
               filterTask={filterTask}
+              handleDrag={handleDrag}
+              handleDrop={handleDrop}
             />
           )}
         </Col>

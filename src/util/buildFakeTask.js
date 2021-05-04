@@ -22,5 +22,6 @@ export const buildFakeTask = () => {
     finishedAt: "",
     createdAt: dateBetwwen,
     updatedAt: dateBetwwen,
+    order: 0
   };
 };
