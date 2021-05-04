@@ -59,7 +59,9 @@ export const Timer = React.memo(
           <Card.Body>
             <Row>
               <Col className="text-center" md={12}>
-                {counter && counter !== -1 ? formatData(counter, "minutes") : "Inicia una tarea"}
+                {counter && counter !== -1
+                  ? formatData(counter, "minutes")
+                  : "Inicia una tarea"}
               </Col>
             </Row>
             <Row>
@@ -75,6 +77,7 @@ export const Timer = React.memo(
                     variant="outline-success"
                     className="my-1"
                     block
+                    disabled={runningTask === ""}
                   >
                     Pausar <BsFillPauseFill />
                   </Button>
@@ -84,6 +87,7 @@ export const Timer = React.memo(
                     variant="outline-success"
                     className="my-1"
                     block
+                    disabled={runningTask === ""}
                   >
                     Reanudar <BsFillPauseFill />
                   </Button>
@@ -100,6 +104,7 @@ export const Timer = React.memo(
                   variant="outline-warning"
                   className="my-1"
                   block
+                  disabled={runningTask === ""}
                 >
                   Detener <BsFillStopFill />
                 </Button>
@@ -115,6 +120,7 @@ export const Timer = React.memo(
                   variant="outline-danger"
                   className="my-1"
                   block
+                  disabled={runningTask === ""}
                 >
                   Reiniciar <BsArrowRepeat />
                 </Button>
@@ -130,6 +136,7 @@ export const Timer = React.memo(
                   variant="outline-warning"
                   className="my-1"
                   block
+                  disabled={runningTask === ""}
                 >
                   Finalizar <BsFillStopwatchFill />
                 </Button>

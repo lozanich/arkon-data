@@ -8,6 +8,7 @@ import { NavbarBootstrap } from "../components/ui/NavbarBootstrap";
 import { ListTasks } from "../components/ListTasks";
 import { AddTask } from "../components/AddTask";
 import { Container } from "react-bootstrap";
+import {About } from "../components/About"
 
 export const AppRouter = () => {
   return (
@@ -20,7 +21,7 @@ export const AppRouter = () => {
         <Container>
           <Switch>
             <Route exact path="/" component={ListTasks}></Route>
-            <Route exact path="/add-new" component={AddTask}></Route>
+            <Route exact path="/about" component={About}></Route>
           </Switch>
         </Container>
       </>

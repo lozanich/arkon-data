@@ -12,8 +12,8 @@ export const NavbarBootstrap = () => {
       <Navbar.Toggle aria-controls="responsive-navbar-nav" />
       <Navbar.Collapse id="basic-navbar-nav">
         <Nav className="mr-auto">
-          <Nav.Link as={Link} to="/add-new">
-            Agregar nueva
+          <Nav.Link as={Link} to="/about">
+            Acerca de
           </Nav.Link>
           {/* <NavLink to="/add-new">Agregar nueva</NavLink> */}
         </Nav>
