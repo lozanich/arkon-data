@@ -1,27 +1,35 @@
 import React from "react";
+import PropTypes from "prop-types";
 import { BsTrash, BsPencil } from "react-icons/bs";
 import { Button, ButtonGroup } from "react-bootstrap";
+import { formatData } from "../util/formatData"
+import Moment from "react-moment"
 
-export const TaskTableItem = ({ item, id, handleDelete }) => {
+export const TaskTableItem = ({ item, id, handleDelete, handleEdit }) => {
   return (
     <>
       <tr key={item.id}>
         {/* <td>{item.id}</td> */}
         <td>{item.name}</td>
         <td>{item.description}</td>
-        <td>{item.duration}</td>
-        <td>{item.advance.toFixed(1)}</td>
-        <td>{item.percentAdvance.toFixed(1)}</td>
-        <td>{item.done === 100 ? "Terminada" : "No terminada"}</td>
+        <td>{formatData(item.duration, "minutes")}</td>
+        <td>{formatData(item.advance, "minutes")}</td>
+        <td>{item.percentAdvance.toFixed(1)}%</td>
+        <td>{item.done === true ? "Terminada" : "No terminada"}</td>
         <td>
-          <ButtonGroup
-            onClick={() => handleDelete(item)}
-            aria-label="Basic example"
-          >
-            <Button value={`${id + "edit"}`} variant="primary">
+          <Moment format="YYYY/MM/DD">{item.createdAt}</Moment>{" "}
+        </td>
+        <td>
+          <ButtonGroup aria-label="Basic example">
+            <Button
+              onClick={() => handleEdit(item)}
+              value={`${id + "edit"}`}
+              variant="primary"
+            >
               <BsPencil value={`${id + "edit"}`} />
             </Button>
             <Button
+              onClick={() => handleDelete(item)}
               value={`${id + "delete"}`}
               className="button-pointer"
               variant="danger"
@@ -33,4 +41,11 @@ export const TaskTableItem = ({ item, id, handleDelete }) => {
       </tr>
     </>
   );
+};
+
+TaskTableItem.propTypes = {
+  item: PropTypes.object.isRequired,
+  id: PropTypes.string.isRequired,
+  handleDelete: PropTypes.func.isRequired,
+  handleEdit: PropTypes.func.isRequired
 };

@@ -1,11 +1,38 @@
+/* eslint-disable no-self-assign */
 import React from "react";
+import PropTypes from "prop-types";
 import { Table } from "react-bootstrap";
 import { TaskTableItem } from "../components/TaskTableItem";
 
-export const TaskTable = ({ tasks, handleDelete }) => {
+export const TaskTable = ({ tasks, handleDelete, handleEdit, filterTask }) => {
+  // console.log(filterTask);
+  
+  if (filterTask) {
+    const { typeFilter, value } = filterTask;
+    typeFilter === "done"
+      ? (tasks = tasks.filter((item) => {
+          return item[typeFilter] === value;
+        }))
+      : typeFilter === "duration30"
+      ? (tasks = tasks.filter((item) => {
+          return item.duration <= 1800;
+        }))
+      : typeFilter === "duration60"
+      ? (tasks = tasks.filter((item) => {
+          return item.duration > 1800 && item.duration <= 3600;
+        }))
+      : typeFilter === "duration120"
+      ?((tasks = tasks.filter((item) => {
+            return item.duration > 3600;
+          }))
+        ) : tasks = tasks
+  }
+
+  // console.log(tasks);
+
   return (
     <>
-      <Table striped bordered hover variant="dark">
+      <Table responsive striped bordered hover variant="dark">
         <thead>
           <tr>
             {/* <th>#</th> */}
@@ -15,6 +42,7 @@ export const TaskTable = ({ tasks, handleDelete }) => {
             <th>Avance</th>
             <th>Porcentaje Avance</th>
             <th>Estatus</th>
+            <th>Fecha creación</th>
             <th>Acciones</th>
           </tr>
         </thead>
@@ -26,6 +54,7 @@ export const TaskTable = ({ tasks, handleDelete }) => {
                 item={item}
                 id={id}
                 handleDelete={handleDelete}
+                handleEdit={handleEdit}
               />
             );
           })}
@@ -33,4 +62,12 @@ export const TaskTable = ({ tasks, handleDelete }) => {
       </Table>
     </>
   );
+};
+
+
+TaskTable.propTypes = {
+  tasks: PropTypes.array.isRequired,
+  handleDelete: PropTypes.func.isRequired,
+  handleEdit: PropTypes.func.isRequired,
+  filterTask: PropTypes.object.isRequired
 };
