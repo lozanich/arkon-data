@@ -1,4 +1,5 @@
 import React from 'react'
+import PropTypes from "prop-types";
 import { Row, Col, Button, Card } from "react-bootstrap";
 import "../styles/finishedTask.css"
 
@@ -34,4 +35,9 @@ export const FinishedTask = ({ tasks, handleFilterTask }) => {
       </Card>
     </>
   );
+};
+
+FinishedTask.propTypes = {
+  tasks: PropTypes.array.isRequired,
+  handleFilterTask: PropTypes.func.isRequired,
 };

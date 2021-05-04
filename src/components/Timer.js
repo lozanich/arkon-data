@@ -1,5 +1,6 @@
 import React, {useEffect, useState} from 'react'
 import { Row, Col, Button, Card } from "react-bootstrap";
+import PropTypes from "prop-types";
 import { formatData } from "../util/formatData"
 import {
   BsFillPauseFill,
@@ -26,6 +27,7 @@ export const Timer = React.memo(
     useEffect(() => {
       setCounter(parseInt(timeFirstTask));
     }, [timeFirstTask]);
+    console.log(runningTask);
 
     // renders counter new calculate
     useEffect(() => {
@@ -139,3 +141,16 @@ export const Timer = React.memo(
     );
   }
 );
+
+
+Timer.propTypes = {
+  statusTask: PropTypes.string.isRequired,
+  
+  
+  handlePauseTask: PropTypes.func.isRequired,
+  handleStopTask: PropTypes.func.isRequired,
+  handleRestartTask: PropTypes.func.isRequired,
+  handleStartTasks: PropTypes.func.isRequired,
+  handleFinishTask: PropTypes.func.isRequired,
+  handleEditTask: PropTypes.func.isRequired,
+};

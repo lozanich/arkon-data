@@ -12,6 +12,7 @@ import {
 import { Row, Col } from "react-bootstrap";
 import moment from "moment"
 import lodash from "lodash"
+import PropTypes from "prop-types";
 
 export const GraphicTask = ({ tasks }) => {
     // const actualWeek = moment().isoWeek()
@@ -145,3 +146,7 @@ export const GraphicTask = ({ tasks }) => {
       </>
     );
 }
+
+GraphicTask.propTypes = {
+  tasks: PropTypes.array.isRequired,
+};

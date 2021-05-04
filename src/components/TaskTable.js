@@ -1,5 +1,6 @@
 /* eslint-disable no-self-assign */
 import React from "react";
+import PropTypes from "prop-types";
 import { Table } from "react-bootstrap";
 import { TaskTableItem } from "../components/TaskTableItem";
 
@@ -61,4 +62,12 @@ export const TaskTable = ({ tasks, handleDelete, handleEdit, filterTask }) => {
       </Table>
     </>
   );
+};
+
+
+TaskTable.propTypes = {
+  tasks: PropTypes.array.isRequired,
+  handleDelete: PropTypes.func.isRequired,
+  handleEdit: PropTypes.func.isRequired,
+  filterTask: PropTypes.object.isRequired
 };

@@ -1,4 +1,5 @@
 import React, { useEffect, useState } from "react";
+import PropTypes from "prop-types";
 import {
   Modal,
   Button,
@@ -300,4 +301,12 @@ export const ModalAdd = ({
       </Modal>
     </>
   );
+};
+
+
+ModalAdd.propTypes = {
+  show: PropTypes.bool.isRequired,
+  handleCloseModal: PropTypes.func.isRequired,
+  handleAddTask: PropTypes.func.isRequired,
+  handleEditTask: PropTypes.func.isRequired
 };

@@ -1,4 +1,5 @@
 import React from "react";
+import PropTypes from "prop-types";
 import { BsTrash, BsPencil } from "react-icons/bs";
 import { Button, ButtonGroup } from "react-bootstrap";
 import { formatData } from "../util/formatData"
@@ -40,4 +41,11 @@ export const TaskTableItem = ({ item, id, handleDelete, handleEdit }) => {
       </tr>
     </>
   );
+};
+
+TaskTableItem.propTypes = {
+  item: PropTypes.object.isRequired,
+  id: PropTypes.string.isRequired,
+  handleDelete: PropTypes.func.isRequired,
+  handleEdit: PropTypes.func.isRequired
 };
