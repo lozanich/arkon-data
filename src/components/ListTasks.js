@@ -112,7 +112,9 @@ export const ListTasks = () => {
     };
     // delete task from state
     dispatch(actionDelete);
-    localStorage.setItem("tasks", JSON.stringify(tasks));
+    // if only one element clear values from the array
+    const actualTasks = tasks.length === 1 ? [] : tasks
+    localStorage.setItem("tasks", JSON.stringify(actualTasks));
   };
 
   // init timer in 0

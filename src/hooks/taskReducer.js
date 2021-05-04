@@ -17,6 +17,7 @@ export const taskReducer = (state = [], action) => {
       return state;
 
     case "delete":
+      console.log(action.payload.id);
       return state.filter((item) => item.id !== action.payload.id);
 
     case "finished":
